@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axiosClient from "../api/axiosClient.js";
 
 function PokemonPage() {
     const { id } = useParams();
@@ -8,14 +9,9 @@ function PokemonPage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Failed to fetch Pokemon details.");
-                }
-                return response.json();
-            })
-            .then((data) => setPokemon(data))
+        axiosClient
+            .get(`/pokemon/${id}`)
+            .then((response) => setPokemon(response.data))
             .catch((err) => setError(err.message));
     }, [id]);
 

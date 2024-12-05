@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axiosClient from "../api/axiosClient.js";
 
 function PokemonsList() {
     const [pokemons, setPokemons] = useState([]);
 
     useEffect(() => {
-        fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
-            .then((response) => response.json())
-            .then((data) => setPokemons(data.results));
+        axiosClient
+            .get('/pokemon?limit=180')
+            .then((response) => setPokemons(response.data.results))
+            .catch((err) => console.error("Failed to fetch Pokémon list:", err));
     }, []);
 
     return (
